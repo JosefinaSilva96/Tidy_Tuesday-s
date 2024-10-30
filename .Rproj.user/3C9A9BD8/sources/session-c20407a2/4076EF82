@@ -1,0 +1,28 @@
+{
+    "id": "4076EF82",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1730314051424.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "id": "ecaabf0a439c421e91f924a302fe8d60",
+        "name": "tuesdata",
+        "title": "tuesdata",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 7307491043415436322,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1730314051424,
+    "read_only": false,
+    "read_only_alternatives": []
+}
