@@ -22,6 +22,9 @@ library(rnaturalearth)
 library(sf)
 library(tidytuesdayR)
 
+
+### INITIAL COMMANDS ----
+
 #Load data set 
 
 tuesdata <- tidytuesdayR::tt_load('2024-10-29')
@@ -30,6 +33,13 @@ tuesdata <- tidytuesdayR::tt_load('2024-10-29')
 monster_movie_genres <- tuesdata$monster_movie_genres
 monster_movies <- tuesdata$monster_movies
 
+#Transform the data set into a data.table
+
+data_table <- as.data.table(monster_movies)
+data_table2 <- as.data.table(monster_movie_genres)
+
+
+### EXPLORE THE DATA ----
 
 
 
