@@ -1,0 +1,100 @@
+# # Tidy Tuesday's-Monster Movies
+
+# 02. Data Analysis
+
+# Libraries
+library(haven)
+library(dplyr)
+library(modelsummary)
+library(stargazer)
+library(ggplot2)
+library(tidyr)
+
+# Load data 
+
+# Load the data set
+
+data_table   <- read_dta(file.path(data_path, "Data/Intermediate/project_basic.dta"))
+
+data_table2   <- read_dta(file.path(data_path, "Data/Intermediate/project_location.dta"))
+
+data_table3   <- read_dta(file.path(data_path, "Data/Intermediate/project_allocation.dta"))
+
+data_table4   <- read_dta(file.path(data_path, "Data/Intermediate/project_release.dta"))
+
+data_table5   <- read_dta(file.path(data_path, "Data/Intermediate/project_release.dta"))
+
+#Transform data sets to data.table 
+
+
+data_table <- as.data.table(data_table)
+
+data_table2 <- as.data.table(data_table2)
+
+data_table3 <- as.data.table(data_table3)
+
+data_table4 <- as.data.table(data_table4)
+
+data_table5 <- as.data.table(data_table5)
+
+# Summary statistics ----
+
+# Create summary statistics by district and export to CSV
+
+output_path <- file.path("C:/WBG/GitHub/Bangladesh/Outputs", "summary_table.csv")
+
+
+summary_table <- datasummary(
+  gob ~ to_factor(adb_sector) * (Mean + SD), 
+  data = data_table,
+  title = "Summary Statistics by Sector",
+  output = output_path  # Change to CSV
+)
+
+
+# Graphs ----
+
+# Bar graph number of projects for all districts
+
+output_path_graphs <- file.path("C:/WBG/GitHub/Bangladesh/Outputs/graph_districts.png")
+
+data_table2_plot <- data_table2 %>%
+  ggplot(aes(x = division)) + 
+  geom_bar(fill = "#B3CDE3") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.3) +  # Add count labels
+  labs(title = "Division Distribution", x = "Division", y = "Count") +
+  theme_minimal()
+
+# Save the plot
+ggsave(output_path_graphs, plot = data_table2_plot, width = 8, height = 6)
+
+
+# Bar graph number of projects for projects types
+
+output_path_graphs <- file.path("C:/WBG/GitHub/Bangladesh/Outputs/graph_project_types.png")
+
+data_table_plot <- data_table %>%
+  ggplot(aes(x = project_type)) + 
+  geom_bar(fill = "#B3CDE3") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.3) +  # Add count labels
+  labs(title = "Project Type Distribution", x = "Project Type", y = "Count") +
+  theme_minimal()
+
+# Save the plot
+ggsave(output_path_graphs, plot = data_table_plot, width = 8, height = 6)
+
+
+# Graph for projects and time
+
+output_path_graphs <- file.path("C:/WBG/GitHub/Bangladesh/Outputs/graph_project_time.png")
+
+data_table3_plot <- data_table3 %>%
+  ggplot(aes(x = fiscal_year_id)) + 
+  geom_bar(fill = "#B3CDE3") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.3) +  # Add count labels
+  labs(title = "Project Time Distribution", x = "Fiscal Year", y = "Count") +
+  theme_minimal()
+
+
+# Save the plot
+ggsave(output_path_graphs, plot = data_table3_plot, width = 8, height = 6)
