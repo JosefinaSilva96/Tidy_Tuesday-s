@@ -78,7 +78,6 @@ join_data_table <- data_table[data_table2, on = .(tconst), nomatch = 0] #630 obs
 setnames(join_data_table, old = names(join_data_table), new = gsub("\\.", "_", names(join_data_table)))
 
 
-
 #Transform data.table to a data.frame
 
 data_table<- as.data.frame(data_table)
@@ -86,6 +85,44 @@ data_table<- as.data.frame(data_table)
 data_table2<- as.data.frame(data_table2)
 
 join_data_table<- as.data.frame(join_data_table)
+
+#  Handle outliers ----
+
+# customized function:
+winsor_function <- function(dataset, var, min = 0.00, max = 0.95){
+  var_sym <- sym(var)
+  
+  percentiles <- quantile(
+    dataset %>% pull(!!var_sym), probs = c(min, max), na.rm = TRUE
+  )
+  
+  min_percentile <- percentiles[1]
+  max_percentile <- percentiles[2]
+  
+  dataset %>%
+    mutate(
+      !!paste0(var, "_w") := case_when(
+        is.na(!!var_sym) ~ NA_real_,
+        !!var_sym <= min_percentile ~ percentiles[1],
+        !!var_sym >= max_percentile ~ percentiles[2],
+        TRUE ~ !!var_sym
+      )
+    )
+}
+
+# Winsorize selected variables in the dataset
+win_vars <- c("runtime_minutes", "average_rating", "num_votes")
+
+# Apply the custom winsor_function to each variable in win_vars
+for (var in win_vars) {
+  join_data_table <- winsor_function(join_data_table, var)
+}
+
+# Update the labels to reflect that winsorization was applied
+join_data_table <- join_data_table %>%
+  mutate(across(ends_with("_w"), 
+                ~ labelled(.x, label = paste0(attr(.x, "label"), 
+                                              " (Winsorized 0.05)"))))
 
 
 # Save the project data 
