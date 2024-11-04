@@ -32,31 +32,60 @@ data_table3 <- as.data.table(data_table3)
 
 # Graphs ----
 
-# Bar graph number of projects for all districts
+# Bar graph number for genres
 
-output_path_graphs <- file.path("C:/WBG/GitHub/Bangladesh/Outputs/graph_districts.png")
+output_path_graphs <- file.path("C:/WBG/GitHub/Tidy_Tuesday-s/10_29/Outputs/graph_genres.png")
 
-data_table2_plot <- data_table2 %>%
-  ggplot(aes(x = division)) + 
+data_table_plot <- data_table %>%
+  ggplot(aes(x = genre_1)) + 
   geom_bar(fill = "#B3CDE3") +
   geom_text(stat = "count", aes(label = ..count..), vjust = -0.3) +  # Add count labels
-  labs(title = "Division Distribution", x = "Division", y = "Count") +
+  labs(title = "Genres Distribution", x = "Genres", y = "Count") +
   theme_minimal()
 
+# Print the plot
+print(data_table_plot)
+
 # Save the plot
-ggsave(output_path_graphs, plot = data_table2_plot, width = 8, height = 6)
+ggsave(output_path_graphs, plot = data_table_plot, width = 8, height = 6)
+
+
+# Bar graph number for number of votes vs rating per genre
+
+output_path_graphs <- file.path("C:/WBG/GitHub/Tidy_Tuesday-s/10_29/Outputs/graph_genres_votes_rating.png")
+
+p <- data_table[, list(
+  average_rating = mean(average_rating, na.rm = TRUE),  # Mean average_rating
+  num_votes = mean(num_votes, na.rm = TRUE)  # Mean num_votes
+), by = genre_1] %>%
+  ggplot(aes(x = average_rating, y = num_votes, color = genre_1)) +  # Use genre_1 for color
+  geom_point(size = 5) +  # Adjust the size of the points if needed
+  theme_bw() +
+  labs(title = "Average Rating vs Number of Votes per Genre Movie",
+       x = "Average Rating",
+       y = "Number of Votes per Genre Movie",
+       color = "Genre")
+
+
+# Print the plot
+print(p)
+
+# Save the plot
+ggsave(output_path_graphs, plot = p, width = 8, height = 6)
 
 
 # Bar graph number of projects for projects types
 
-output_path_graphs <- file.path("C:/WBG/GitHub/Bangladesh/Outputs/graph_project_types.png")
+output_path_graphs <- file.path("C:/WBG/GitHub/Tidy_Tuesday-s/10_29/Outputs/graph_genres_numvotes.png")
 
-data_table_plot <- data_table %>%
-  ggplot(aes(x = project_type)) + 
-  geom_bar(fill = "#B3CDE3") +
-  geom_text(stat = "count", aes(label = ..count..), vjust = -0.3) +  # Add count labels
-  labs(title = "Project Type Distribution", x = "Project Type", y = "Count") +
-  theme_minimal()
+# Filter and plot using ggplot2
+p <- data_table %>%  
+  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop, color = continent)) +
+  geom_point() +
+  theme_bw()
+
+# Print the plot
+print(p)
 
 # Save the plot
 ggsave(output_path_graphs, plot = data_table_plot, width = 8, height = 6)
