@@ -76,6 +76,10 @@ ggsave(output_path_graphs, plot = p, width = 8, height = 6)
 
 #Graph number of genres per year
 
+
+output_path_graphs <- file.path("C:/WBG/GitHub/Tidy_Tuesday-s/10_29/Outputs/graph_genres_year.png")
+
+
 pastel_colors <- c("#FFB3BA", "#FFDFBA", "#FFFFBA", "#BAFFC9", "#BAE1FF",
                    "#FFABAB", "#FFC3A0", "#FF677D", "#D4A5A5", "#392F5A",
                    "#B9FBC0", "#C1C8E4", "#FFC4D6", "#F6B93B", "#B1E1FF",
@@ -97,3 +101,6 @@ p1 <- ggplot(summary_data, aes(x = year, y = num_movies, color = genre_1)) +
   
 # Print the plot
 print(p1)
+
+# Save the plot
+ggsave(output_path_graphs, plot = p1, width = 8, height = 6)
